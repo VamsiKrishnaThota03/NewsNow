@@ -19,7 +19,7 @@ export class News extends Component {
             page: 1,
             category: 'general'
         }
-        document.title = `${this.capitalizeString(this.props.category)} - News`;
+        document.title = `${this.capitalizeString(this.props.category)} - NewsNow`;
     }
 
     async updaterNews(pageNum) {
