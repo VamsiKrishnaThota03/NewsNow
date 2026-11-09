@@ -1,31 +1,45 @@
-import './App.css';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LoadingBar from 'react-top-loading-bar';
 import Navbar from './components/Navbar';
 import News from './components/News';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-import React, { Component } from 'react'
+import CATEGORIES from './categories';
 
 export default class App extends Component {
-  pageSize =7;
-  progress=0;
+  pageSize = 9;
   apiKey = process.env.REACT_APP_API_KEY;
+  state = { progress: 0 };
+
+  setProgress = (progress) => this.setState({ progress });
+
   render() {
     return (
-      <>
-        <Router>
+      <Router>
+        <LoadingBar color="#ef4444" height={3} progress={this.state.progress} onLoaderFinished={() => this.setProgress(0)} />
         <Navbar />
-        <Routes>
-        {/* console.log({this.apiKey}) */}
-          <Route exact path="/business" element={<News key='business' apikey={this.apiKey} pageSize={this.pageSize} category="business" progress={this.progress} />} />
-          <Route exact path="/entertainment" element={<News key='entertainment' apikey={this.apiKey} pageSize={this.pageSize} category="entertainment" progress={this.progress} />} />
-          <Route exact path="/" element={<News key='general' apikey={this.apiKey} pageSize={this.pageSize} category="general" progress={this.progress} />} />
-          <Route exact path="/health" element={<News key='health' apikey={this.apiKey} pageSize={this.pageSize} category="health" progress={this.progress} />} />
-          <Route exact path="/science" element={<News key='science' apikey={this.apiKey} pageSize={this.pageSize} category="science" />} progress={this.progress} />
-          <Route exact path="/sport" element={<News key='sport' apikey={this.apiKey} pageSize={this.pageSize} category="sport" progress={this.progress} />} />
-          <Route exact path="/technology" element={<News key='technology' apikey={this.apiKey} pageSize={this.pageSize} category="technology" progress={this.progress} />} />
-        </Routes>
+        <main className="container py-4">
+          <Routes>
+            {CATEGORIES.map((c) => (
+              <Route
+                key={c.key}
+                path={c.path}
+                element={<News key={c.key} apiKey={this.apiKey} pageSize={this.pageSize} category={c.key} label={c.label} setProgress={this.setProgress} />}
+              />
+            ))}
+            {/* Old link kept working */}
+            <Route path="/sport" element={<Navigate to="/sports" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+        <footer className="nn-footer py-4">
+          <div className="container small text-body-secondary d-flex flex-wrap justify-content-between gap-2">
+            <span>NewsNow · top headlines from India</span>
+            <span>
+              Powered by <a href="https://newsapi.org" target="_blank" rel="noreferrer">NewsAPI.org</a>
+            </span>
+          </div>
+        </footer>
       </Router>
-      </>
-    )
+    );
   }
 }
