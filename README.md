@@ -1,70 +1,72 @@
-# Getting Started with Create React App
+# NewsNow
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React news reader that shows top headlines from India by category, using the NewsAPI.org API with infinite scrolling.
 
-## Available Scripts
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
+![React Router](https://img.shields.io/badge/React_Router-6-CA4245?logo=reactrouter&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?logo=bootstrap&logoColor=white)
+![NewsAPI](https://img.shields.io/badge/data-NewsAPI.org-blue)
 
-In the project directory, you can run:
+## Overview
 
-### `npm start`
+NewsNow is a client-side React app built with class components. Each category is its own route. For the selected category, the app fetches the [NewsAPI.org](https://newsapi.org/) `top-headlines` endpoint (`country=in`) and renders the articles as Bootstrap cards.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Category routes: General (`/`), Business, Entertainment, Health, Science, Sport and Technology.
+- Infinite scrolling with `react-infinite-scroll-component`, loading 7 articles per page.
+- A top loading bar (`react-top-loading-bar`) and a spinner while articles load.
+- News cards with the image (or a placeholder), the title, the description, a source badge, the author and the publish date, plus a link to the full article.
+- The browser tab title updates for each category, for example `Business - NewsNow`.
 
-### `npm test`
+## Tech stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React 18 (class components), React Router 6
+- Bootstrap 5 (via CDN in `public/index.html`)
+- react-infinite-scroll-component, react-top-loading-bar
+- NewsAPI.org REST API
 
-### `npm run build`
+## Project structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+NewsNow/
+├── public/
+└── src/
+    ├── App.js              # routes, one per category
+    └── components/
+        ├── Navbar.js       # category links
+        ├── News.js         # fetching, pagination, infinite scroll
+        ├── NewsItem.js     # article card
+        └── Spinner.js      # loading indicator
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Getting started
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Prerequisites
 
-### `npm run eject`
+- Node.js 16 or later and npm
+- A free API key from [newsapi.org](https://newsapi.org/register)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Install and run
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+git clone https://github.com/VamsiKrishnaThota03/NewsNow.git
+cd NewsNow
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Create a `.env.local` file in the project root:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+| Variable            | Description          | Example                 |
+| ------------------- | -------------------- | ----------------------- |
+| `REACT_APP_API_KEY` | Your NewsAPI.org key | `<your-newsapi-key>`    |
 
-## Learn More
+```bash
+npm start        # dev server on http://localhost:3000
+npm run build    # production build in build/
+npm test         # CRA test runner
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+`npm run deploy` publishes `build/` with `gh-pages`. Install it first with `npm i -D gh-pages`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> NewsAPI's free Developer plan only allows requests from `localhost`, so a static deployment needs a paid plan or a small proxy server.
