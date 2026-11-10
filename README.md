@@ -60,7 +60,7 @@ NewsNow/
 ### Install and run
 
 ```bash
-git clone https://github.com/VamsiKrishnaThota03/NewsNow.git
+git clone https://github.com/VamsiKrishnaThota03/news-now.git
 cd NewsNow
 npm install
 cp .env.example .env     # then put your key in it
